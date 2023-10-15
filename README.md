@@ -1,7 +1,9 @@
 # UI-Opencart-automated-tests
 ![](/project_logo.jpg "")  
 UI автотесты проекта Opencart с использованием pytest + selenium  
-Подготовка тестового окружения под Windows:
+[Demo video Jenkins](https://youtu.be/kF_3omCdmpg)  
+[Demo video Local](https://youtu.be/4kdmV1U2-9w)  
+Подготовка тестового окружения под Windows:  
 1. Установить Docker Desktop  
 2. Перейти в директорию opencart
 3. Выполнить команду  

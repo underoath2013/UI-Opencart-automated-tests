@@ -13,9 +13,7 @@ pipeline {
         string(name: 'BROWSER_VERSION', defaultValue: '115', description: 'Browser version')
         string(name: 'ALLURE_RESULTS', defaultValue: 'allure-results', description: 'Path to Allure results directory')
         string(name: 'ALLURE_REPORT', defaultValue: 'allure-report', description: 'Path to Allure report directory')
-
     }
-
 
     stages {
         stage('Checkout Code') {
@@ -31,13 +29,16 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    sh """
-                    python3 -m venv venv
-                    . venv/bin/activate
-                    pip install -r requirements.txt
-                    pytest --browser \${BROWSER} --bv \${BROWSER_VERSION} --url \${APP_URL} -n \${THREADS} --remote --remote_url \${EXECUTOR_ADDRESS} --alluredir \${ALLURE_RESULTS}
-                    \${ALLURE_PATH} generate \${ALLURE_RESULTS} -c -o \${ALLURE_REPORT}
-                    """
+                    try {
+                        sh """
+                        python3 -m venv venv
+                        . venv/bin/activate
+                        pip install -r requirements.txt
+                        pytest --browser \${BROWSER} --bv \${BROWSER_VERSION} --url \${APP_URL} -n \${THREADS} --remote --remote_url \${EXECUTOR_ADDRESS} --alluredir \${ALLURE_RESULTS}
+                        """
+                    } finally {
+                        sh "\${ALLURE_PATH} generate \${ALLURE_RESULTS} -c -o \${ALLURE_REPORT}"
+                    }
                 }
             }
         }
