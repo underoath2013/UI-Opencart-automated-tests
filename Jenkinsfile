@@ -22,7 +22,8 @@ pipeline {
                 branches: [[name: '*/main']],
                 extensions: [],
                 submoduleCfg: [],
-                userRemoteConfigs: [[url: 'https://github.com/underoath2013/UI-Opencart-automated-tests.git']]])
+                userRemoteConfigs: [[url: 'https://github.com/underoath2013/UI-Opencart-automated-tests.git']]
+                         ])
             }
         }
 
@@ -36,8 +37,8 @@ pipeline {
                         pip install -r requirements.txt
                         pytest --browser \${BROWSER} --bv \${BROWSER_VERSION} --url \${APP_URL} -n \${THREADS} --remote --remote_url \${EXECUTOR_ADDRESS} --alluredir \${ALLURE_RESULTS}
                         """
-                    } finally {
-                        sh "\${ALLURE_PATH} generate \${ALLURE_RESULTS} -c -o \${ALLURE_REPORT}"
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
                     }
                 }
             }
@@ -45,13 +46,15 @@ pipeline {
 
         stage('Publish Allure Report') {
             steps {
-                allure([
-                    includeProperties: false,
-                    jdk: '',
-                    properties: [],
-                    reportBuildPolicy: 'ALWAYS',
-                    results: [[path: "${ALLURE_RESULTS}"]]
-                ])
+                script {
+                    allure([
+                        includeProperties: false,
+                        jdk: '',
+                        properties: [],
+                        reportBuildPolicy: 'ALWAYS',
+                        results: [[path: "${ALLURE_RESULTS}"]]
+                    ])
+                }
             }
         }
     }
