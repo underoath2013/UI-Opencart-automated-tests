@@ -29,7 +29,7 @@ class Logger:
 
 def pytest_addoption(parser):
     parser.addoption("--browser", default="chrome", help="Available browsers: firefox, chrome")
-    parser.addoption("--url", default="http://192.168.0.109:8081", help="Base URL for the tests")
+    parser.addoption("--url", default="http://192.168.0.102:8081", help="Base URL for the tests")
     parser.addoption("--maximize", action="store_true", help="Maximize browser window")
     parser.addoption("--headless", action="store_true", help="Headless mode")
     parser.addoption("--log_level", choices=["INFO", "ERROR"],
